@@ -27,9 +27,11 @@ public class MancalaGame implements Serializable {
 
 	/*
 	 * Creates generic layout for Mancala game, having 6 pits on each side, one
-	 * scoring put for each player and initializing all pits to value of 0 Pit
-	 * numbering in out array is as follows: 13 12 11 10 9 8 7 {Player 2} 0 1 2
-	 * 3 4 5 6 {Player 1} Pits #6 and #13 are scoring pits.
+	 * scoring put for each player and initializing all pits to value of 0. Pit
+	 * numbering in array is as follows: 
+	 *  13   12 11 10 9 8 7         {Player 2}
+	 *        0  1  2 3 4 5    6    {Player 1} 
+	 *  Pits #6 and #13 are scoring pits.
 	 */
 	public MancalaGame() {
 		// promptUser board style
