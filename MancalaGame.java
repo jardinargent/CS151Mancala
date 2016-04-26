@@ -80,6 +80,11 @@ public class MancalaGame implements Serializable {
 		return currentPlayer == player1;
 	}
 
+	/*
+	* Move method, used for initial move where a pit is selected
+	*
+	*@param pit pit which was selected by user
+	*/
 	public void move(int pit) {
 		cloneForUndo = board.clone(); // clone in case player chooses to
 		// undo
@@ -96,7 +101,7 @@ public class MancalaGame implements Serializable {
 	}
 
 	/*
-	 * Move method
+	 * Move to method, used for traversing mancala board after picking up stones from initial pit
 	 * 
 	 * @param stonesInHand stones currently in hand
 	 * 
@@ -127,19 +132,19 @@ public class MancalaGame implements Serializable {
 
 		// dropping last stone, so check if landing in own scoring pit or
 		// side for bonus turn or stones
-		if (isValid() && board[currentPit] == 0) { // landed on empty of
+		if (isValid() && board[currentPit] == 0) {              				// landed on empty of
 													// pit of own side,
 													// so bonus!
 			bonusStones();
 		}
-		if (extraTurn()) { // we landed in own mancala pit, so drop last
-							// stone and go again!
+		//we landed in own mancala pit, so drop last stone and go again!
+		if (extraTurn()){
 			board[6]++;
 			stonesInHand = 0;
 			System.out.println("Extra turn!");
 		}
-		else { // no bonus or extra turn, so drop last stone in pit and turn
-				// is over
+		// no bonus or extra turn, so drop last stone in pit and turn is over
+		else { 
 			board[currentPit]++;
 			stonesInHand = 0;
 			endTurn();
@@ -147,8 +152,9 @@ public class MancalaGame implements Serializable {
 	}
 
 	/*
-	 * Checks if player has earned an extra turn return true if landed in own
-	 * mancala pit, false otherwise
+	 * Checks if player has earned an extra turn
+	 *
+	 * return true if landed in own mancala pit, false otherwise
 	 */
 	public boolean extraTurn() {
 		if (isPlayer1() && currentPit == 6)
@@ -158,12 +164,11 @@ public class MancalaGame implements Serializable {
 
 	/*
 	 * Player landed in empty pit of own side. Gets the final stone he had in
-	 * hand plus pit directly across
+	 * hand plus pit directly across, places total in own mancala
 	 */
 	public void bonusStones() {
 		int bonus = 1; // final pit player had when landing on empty pit
-		bonus += board[12 - currentPit]; // pit 12 is final available pit to
-											// take from, 13 not allowed
+		bonus += board[12 - currentPit]; // (12 - currentPit) will get us pit directly across board
 		board[12 - currentPit] = 0;
 		if (isPlayer1()) { // if player one, place bonus stones in pit 6
 			board[6] += bonus;
@@ -175,8 +180,9 @@ public class MancalaGame implements Serializable {
 
 	/*
 	 * Used to check that current pit is valid, meaning on current player's side
-	 * of board return true if current pit is on current player's side of board
-	 * excluding scoring pits, false otherwise
+	 * of board
+	 * 
+	 * return true if current pit is on current player's side of board excluding scoring pits, false otherwise
 	 */
 	public boolean isValid() {
 		if (isPlayer1() && currentPit < 7 && currentPit != 6)
@@ -200,8 +206,9 @@ public class MancalaGame implements Serializable {
 	}
 
 	/*
-	 * Helper method used to check if game is over return true either player
-	 * side pits are completely empty
+	 * Helper method used to check if game is over
+	 * 
+	 * return true if either player side pits are completely empty, false otherwise
 	 */
 	public boolean checkEndGame() {
 		int total = 0;
@@ -212,7 +219,7 @@ public class MancalaGame implements Serializable {
 		for (int i = 7; i < 13; i++) {
 			total2 += board[i];
 		}
-
+		
 		if (total == 0 || total2 == 0) {
 			gameOver = true;
 			return true;
