@@ -18,7 +18,7 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
 public class MancalaGame implements Serializable {
-	private Player player1, player2, currentPlayer, winner;
+	private Player player1, player2, currentPlayer;
 	private boolean gameOver;
 	private int[] board, cloneForRestart, cloneForUndo;
 	ArrayList<ChangeListener> listeners;
@@ -242,14 +242,17 @@ public class MancalaGame implements Serializable {
 	 * Method used to calculate winner and print to screen
 	 */
 	public void determineWinner() {
+		String winner = "";
 		if (board[6] > board[13])
-			winner = player1;
+			winner = player1.name;
 		else if (board[6] < board[13])
-			winner = player2;
+			winner = player2.name;
 		else {
 			System.out.println("The game is a tie");
+			return;
 		}
 		System.out.println(winner + " is the winner");
+
 	}
 
 	/*
