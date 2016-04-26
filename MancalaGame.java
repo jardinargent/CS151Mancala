@@ -18,7 +18,7 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
 public class MancalaGame implements Serializable {
-	private Player player1, player2, currentPlayer, winner;
+	private Player player1, player2, currentPlayer;
 	private boolean gameOver;
 	private int[] board, cloneForRestart, cloneForUndo;
 	ArrayList<ChangeListener> listeners;
@@ -58,7 +58,7 @@ public class MancalaGame implements Serializable {
 		int originalCount = stonesInEachPit;
 		for (int i = 0; i < board.length; i++) {
 			if (i == 6 || i == 13) {
-				board[i] = 0;
+				continue;
 			}
 			else {
 				board[i] = originalCount;
@@ -80,6 +80,11 @@ public class MancalaGame implements Serializable {
 		return currentPlayer == player1;
 	}
 
+	/*
+	* Move method, used for initial move where a pit is selected
+	*
+	* @param pit pit which was selected by user
+	*/
 	public void move(int pit) {
 		cloneForUndo = board.clone(); // clone in case player chooses to
 		// undo
@@ -92,11 +97,14 @@ public class MancalaGame implements Serializable {
 		stonesInHand = board[currentPit];
 		resetPit();
 		moveTo(stonesInHand, ++currentPit);
-		// return;
+		checkEndGame();
+		if (gameOver) {
+			determineWinner();
+		}
 	}
 
 	/*
-	 * Move method
+	 * Move to method, used for traversing mancala board after picking up stones from initial pit
 	 * 
 	 * @param stonesInHand stones currently in hand
 	 * 
@@ -127,19 +135,19 @@ public class MancalaGame implements Serializable {
 
 		// dropping last stone, so check if landing in own scoring pit or
 		// side for bonus turn or stones
-		if (isValid() && board[currentPit] == 0) { // landed on empty of
+		if (isValid() && board[currentPit] == 0) {              				// landed on empty of
 													// pit of own side,
 													// so bonus!
 			bonusStones();
 		}
-		if (extraTurn()) { // we landed in own mancala pit, so drop last
-							// stone and go again!
+		//check if extra turn is earned
+		if (extraTurn()){
 			board[6]++;
 			stonesInHand = 0;
 			System.out.println("Extra turn!");
 		}
-		else { // no bonus or extra turn, so drop last stone in pit and turn
-				// is over
+		// no bonus or extra turn, so drop last stone in pit and turn is over
+		else { 
 			board[currentPit]++;
 			stonesInHand = 0;
 			endTurn();
@@ -147,23 +155,26 @@ public class MancalaGame implements Serializable {
 	}
 
 	/*
-	 * Checks if player has earned an extra turn return true if landed in own
-	 * mancala pit, false otherwise
+	 * Checks if player has earned an extra turn by landing in own mancala on final stone
+	 *
+	 * return true if landed in own mancala pit, false otherwise
 	 */
 	public boolean extraTurn() {
-		if (isPlayer1() && currentPit == 6)
+		if (isPlayer1() && currentPit == 6 || !isPlayer1() && currentPit == 13){
 			return true;
-		return false;
+		}
+		else{
+			return false;
+		}
 	}
 
 	/*
 	 * Player landed in empty pit of own side. Gets the final stone he had in
-	 * hand plus pit directly across
+	 * hand plus pit directly across, places total in own mancala
 	 */
 	public void bonusStones() {
 		int bonus = 1; // final pit player had when landing on empty pit
-		bonus += board[12 - currentPit]; // pit 12 is final available pit to
-											// take from, 13 not allowed
+		bonus += board[12 - currentPit]; // (12 - currentPit) will get us pit directly across board
 		board[12 - currentPit] = 0;
 		if (isPlayer1()) { // if player one, place bonus stones in pit 6
 			board[6] += bonus;
@@ -175,8 +186,9 @@ public class MancalaGame implements Serializable {
 
 	/*
 	 * Used to check that current pit is valid, meaning on current player's side
-	 * of board return true if current pit is on current player's side of board
-	 * excluding scoring pits, false otherwise
+	 * of board
+	 * 
+	 * return true if current pit is on current player's side of board excluding scoring pits, false otherwise
 	 */
 	public boolean isValid() {
 		if (isPlayer1() && currentPit < 7 && currentPit != 6)
@@ -200,10 +212,11 @@ public class MancalaGame implements Serializable {
 	}
 
 	/*
-	 * Helper method used to check if game is over return true either player
-	 * side pits are completely empty
+	 * Helper method used to check if game is over
+	 * 
+	 * return true if either player side pits are completely empty, false otherwise
 	 */
-	public boolean checkEndGame() {
+	public void checkEndGame() {
 		int total = 0;
 		int total2 = 0;
 		for (int i = 0; i < 6; i++) {
@@ -212,12 +225,10 @@ public class MancalaGame implements Serializable {
 		for (int i = 7; i < 13; i++) {
 			total2 += board[i];
 		}
-
+		
 		if (total == 0 || total2 == 0) {
 			gameOver = true;
-			return true;
 		}
-		return false;
 	}
 
 	/*
@@ -231,13 +242,14 @@ public class MancalaGame implements Serializable {
 	 * Method used to calculate winner and print to screen
 	 */
 	public void determineWinner() {
-		// use array or have counter??
+		String winner = "";
 		if (board[6] > board[13])
-			winner = player1;
+			winner = player1.name;
 		else if (board[6] < board[13])
-			winner = player2;
+			winner = player2.name;
 		else {
 			System.out.println("The game is a tie");
+			return;
 		}
 		System.out.println(winner + " is the winner");
 	}
@@ -253,12 +265,6 @@ public class MancalaGame implements Serializable {
 	 * Switch players turn, resetting undos as we switch
 	 */
 	public void endTurn() {
-		checkEndGame();
-		if (gameOver) {
-			determineWinner();
-			return;
-		}
-		else {
 			currentPlayer.resetUndos();
 			if (currentPlayer == player1) {
 				currentPlayer = player2;
@@ -268,7 +274,7 @@ public class MancalaGame implements Serializable {
 			}
 			printBoard();
 			System.out.println("It is now " + currentPlayer.name + "'s turn");
-		}
+		
 	}
 
 	/*
@@ -307,17 +313,26 @@ public class MancalaGame implements Serializable {
 			OutputStream buffer = new BufferedOutputStream(file);
 			ObjectOutput output = new ObjectOutputStream(buffer);
 			try {
+				if(gameOver){
+					//notify no need to save completed game
+				}
+				else{
+				games.add(this);
 				output.writeObject(games);
+				}
 			}
 			finally {
 				output.close();
 			}
 		}
-		catch (IOException ex) {
-			System.out.println("Not successful");
+		catch (IOException e) {
+			System.out.println("Save not successful");
 		}
 	}
 
+	/*
+	 * Load games on file
+	 */
 	public void load() throws IOException, ClassNotFoundException {
 		try {
 			// use buffering
