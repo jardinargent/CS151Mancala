@@ -252,7 +252,6 @@ public class MancalaGame implements Serializable {
 			return;
 		}
 		System.out.println(winner + " is the winner");
-
 	}
 
 	/*
@@ -314,17 +313,26 @@ public class MancalaGame implements Serializable {
 			OutputStream buffer = new BufferedOutputStream(file);
 			ObjectOutput output = new ObjectOutputStream(buffer);
 			try {
+				if(gameOver){
+					//notify no need to save completed game
+				}
+				else{
+				games.add(this);
 				output.writeObject(games);
+				}
 			}
 			finally {
 				output.close();
 			}
 		}
-		catch (IOException ex) {
-			System.out.println("Not successful");
+		catch (IOException e) {
+			System.out.println("Save not successful");
 		}
 	}
 
+	/*
+	 * Load games on file
+	 */
 	public void load() throws IOException, ClassNotFoundException {
 		try {
 			// use buffering
