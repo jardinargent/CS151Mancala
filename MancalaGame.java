@@ -58,7 +58,7 @@ public class MancalaGame implements Serializable {
 		int originalCount = stonesInEachPit;
 		for (int i = 0; i < board.length; i++) {
 			if (i == 6 || i == 13) {
-				board[i] = 0;
+				continue;
 			}
 			else {
 				board[i] = originalCount;
@@ -83,7 +83,7 @@ public class MancalaGame implements Serializable {
 	/*
 	* Move method, used for initial move where a pit is selected
 	*
-	*@param pit pit which was selected by user
+	* @param pit pit which was selected by user
 	*/
 	public void move(int pit) {
 		cloneForUndo = board.clone(); // clone in case player chooses to
@@ -97,7 +97,10 @@ public class MancalaGame implements Serializable {
 		stonesInHand = board[currentPit];
 		resetPit();
 		moveTo(stonesInHand, ++currentPit);
-		// return;
+		checkEndGame();
+		if (gameOver) {
+			determineWinner();
+		}
 	}
 
 	/*
@@ -137,7 +140,7 @@ public class MancalaGame implements Serializable {
 													// so bonus!
 			bonusStones();
 		}
-		//we landed in own mancala pit, so drop last stone and go again!
+		//check if extra turn is earned
 		if (extraTurn()){
 			board[6]++;
 			stonesInHand = 0;
@@ -152,14 +155,17 @@ public class MancalaGame implements Serializable {
 	}
 
 	/*
-	 * Checks if player has earned an extra turn
+	 * Checks if player has earned an extra turn by landing in own mancala on final stone
 	 *
 	 * return true if landed in own mancala pit, false otherwise
 	 */
 	public boolean extraTurn() {
-		if (isPlayer1() && currentPit == 6)
+		if (isPlayer1() && currentPit == 6 || !isPlayer1() && currentPit == 13){
 			return true;
-		return false;
+		}
+		else{
+			return false;
+		}
 	}
 
 	/*
@@ -210,7 +216,7 @@ public class MancalaGame implements Serializable {
 	 * 
 	 * return true if either player side pits are completely empty, false otherwise
 	 */
-	public boolean checkEndGame() {
+	public void checkEndGame() {
 		int total = 0;
 		int total2 = 0;
 		for (int i = 0; i < 6; i++) {
@@ -222,9 +228,7 @@ public class MancalaGame implements Serializable {
 		
 		if (total == 0 || total2 == 0) {
 			gameOver = true;
-			return true;
 		}
-		return false;
 	}
 
 	/*
@@ -238,7 +242,6 @@ public class MancalaGame implements Serializable {
 	 * Method used to calculate winner and print to screen
 	 */
 	public void determineWinner() {
-		// use array or have counter??
 		if (board[6] > board[13])
 			winner = player1;
 		else if (board[6] < board[13])
@@ -260,12 +263,6 @@ public class MancalaGame implements Serializable {
 	 * Switch players turn, resetting undos as we switch
 	 */
 	public void endTurn() {
-		checkEndGame();
-		if (gameOver) {
-			determineWinner();
-			return;
-		}
-		else {
 			currentPlayer.resetUndos();
 			if (currentPlayer == player1) {
 				currentPlayer = player2;
@@ -275,7 +272,7 @@ public class MancalaGame implements Serializable {
 			}
 			printBoard();
 			System.out.println("It is now " + currentPlayer.name + "'s turn");
-		}
+		
 	}
 
 	/*
