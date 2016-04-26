@@ -338,7 +338,7 @@ public class MancalaGame implements Serializable {
 			// use buffering
 			File gamesInFile = new File("games.txt");
 			if (!gamesInFile.exists())
-				System.out.println("This is the first run!");
+				System.out.println("First run");
 			else {
 				InputStream file = new FileInputStream(gamesInFile);
 				InputStream buffered = new BufferedInputStream(file);
