@@ -33,13 +33,15 @@ public class Menu {
 	private JButton startGame;
 	private JButton[] countButton;
 	private JButton[] layoutButton;
+	private MancalaGame game;
 
 	private BoardStyle board;
 	private int stoneCount;
 
-	public Menu() {
+	public Menu(MancalaGame game) {
 		stoneCount = 0;
 		board = null;
+		this.game = game;
 		frame =  new JFrame();
 		frame.setSize(500, 500);
 		frame.getContentPane().add(createPanel());
@@ -109,8 +111,12 @@ public class Menu {
 		startGame.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent event) {
-				if (stoneCount != 0 && board != null)
+				if (stoneCount != 0 && board != null) {
+					game.newGame("Player 1", "Player 2", stoneCount);
+					game.setBoardStyle(board);
+					MancalaBoard board = new MancalaBoard(game);
 					frame.dispose();
+				}
 			}
 		});
 
@@ -192,20 +198,5 @@ public class Menu {
 			e.printStackTrace();
 		}
 		return img;
-	}
-	/**
-	 * Returns stone count
-	 * @return stoneCount returns the user selected stone count
-	 */
-	public int getStoneCount() {
-		return this.stoneCount;
-	}
-
-	/**
-	 * Returns the style chosen
-	 * @return BoardStyle the style chosen
-	 */
-	public BoardStyle getStyle() {
-		return board;
 	}
 }

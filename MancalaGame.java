@@ -24,13 +24,14 @@ public class MancalaGame implements Serializable {
 	ArrayList<ChangeListener> listeners;
 	private int currentPit, stonesInHand;
 	private List<MancalaGame> games;
+	private BoardStyle boardStyle = null;
 
 	/*
 	 * Creates generic layout for Mancala game, having 6 pits on each side, one
-	 * scoring put for each player and initializing all pits to value of 0. Pit
-	 * numbering in array is as follows: 
+	 * scoring pit for each player and initializing all pits to value of 0. Pit
+	 * numbering in array is as follows:
 	 *  13   12 11 10 9 8 7         {Player 2}
-	 *        0  1  2 3 4 5    6    {Player 1} 
+	 *        0  1  2 3 4 5    6    {Player 1}
 	 *  Pits #6 and #13 are scoring pits.
 	 */
 	public MancalaGame() {
@@ -46,11 +47,10 @@ public class MancalaGame implements Serializable {
 
 	/*
 	 * Start a new game with given players and stones in each pit
-	 * 
+	 *
 	 * @param p1 name of player 1
-	 * 
 	 * @param p2 name of player 2
-	 * 
+	 *
 	 * @param stonesInEachPit number of stones in each pit prior to game
 	 * starting
 	 */
@@ -59,8 +59,7 @@ public class MancalaGame implements Serializable {
 		for (int i = 0; i < board.length; i++) {
 			if (i == 6 || i == 13) {
 				continue;
-			}
-			else {
+			} else {
 				board[i] = originalCount;
 			}
 		}
@@ -69,7 +68,7 @@ public class MancalaGame implements Serializable {
 		currentPlayer = player1;
 		cloneForRestart = board.clone(); // save board layout for restart button
 		printBoard();
-		System.out.println("It is now " + currentPlayer.name + "'s turn");
+		System.out.println("It is now " + currentPlayer.getName() + "'s turn");
 	}
 
 	/*
@@ -77,12 +76,11 @@ public class MancalaGame implements Serializable {
 	 * otherwise
 	 */
 	public boolean isPlayer1() {
-		return currentPlayer == player1;
+		return currentPlayer.equals(player1);
 	}
 
 	/*
 	* Move method, used for initial move where a pit is selected
-	*
 	* @param pit pit which was selected by user
 	*/
 	public void move(int pit) {
@@ -105,9 +103,9 @@ public class MancalaGame implements Serializable {
 
 	/*
 	 * Move to method, used for traversing mancala board after picking up stones from initial pit
-	 * 
+	 *
 	 * @param stonesInHand stones currently in hand
-	 * 
+	 *
 	 * @param pit number of pit
 	 */
 	public void moveTo(int stonesInHand, int pit) {
@@ -117,12 +115,12 @@ public class MancalaGame implements Serializable {
 			currentPit = 0; // loops pitNum to stay between 0 and 13
 		// complete player's turn
 		if (isPlayer1() && currentPit == 13 || !isPlayer1() && currentPit == 6) { // player
-																					// will
-																					// skip
-																					// other
-																					// player's
-																					// scoring
-																					// pit
+			// will
+			// skip
+			// other
+			// player's
+			// scoring
+			// pit
 			moveTo(stonesInHand, ++currentPit);
 			// return;
 		}
@@ -136,18 +134,18 @@ public class MancalaGame implements Serializable {
 		// dropping last stone, so check if landing in own scoring pit or
 		// side for bonus turn or stones
 		if (isValid() && board[currentPit] == 0) {              				// landed on empty of
-													// pit of own side,
-													// so bonus!
+			// pit of own side,
+			// so bonus!
 			bonusStones();
 		}
 		//check if extra turn is earned
-		if (extraTurn()){
+		if (extraTurn()) {
 			board[6]++;
 			stonesInHand = 0;
 			System.out.println("Extra turn!");
 		}
 		// no bonus or extra turn, so drop last stone in pit and turn is over
-		else { 
+		else {
 			board[currentPit]++;
 			stonesInHand = 0;
 			endTurn();
@@ -160,10 +158,9 @@ public class MancalaGame implements Serializable {
 	 * return true if landed in own mancala pit, false otherwise
 	 */
 	public boolean extraTurn() {
-		if (isPlayer1() && currentPit == 6 || !isPlayer1() && currentPit == 13){
+		if (isPlayer1() && currentPit == 6 || !isPlayer1() && currentPit == 13) {
 			return true;
-		}
-		else{
+		} else {
 			return false;
 		}
 	}
@@ -178,8 +175,7 @@ public class MancalaGame implements Serializable {
 		board[12 - currentPit] = 0;
 		if (isPlayer1()) { // if player one, place bonus stones in pit 6
 			board[6] += bonus;
-		}
-		else { // if player 2, place stones in pit 13
+		} else { // if player 2, place stones in pit 13
 			board[13] += bonus;
 		}
 	}
@@ -187,13 +183,13 @@ public class MancalaGame implements Serializable {
 	/*
 	 * Used to check that current pit is valid, meaning on current player's side
 	 * of board
-	 * 
+	 *
 	 * return true if current pit is on current player's side of board excluding scoring pits, false otherwise
 	 */
 	public boolean isValid() {
 		if (isPlayer1() && currentPit < 7 && currentPit != 6)
 			return true; // check appropriate side of board, excluding scoring
-							// pit
+		// pit
 		else if (!isPlayer1() && currentPit >= 7 && currentPit != 13)
 			return true;
 		else {
@@ -205,7 +201,7 @@ public class MancalaGame implements Serializable {
 	 * Undo move to previous state
 	 */
 	public void undo() {
-		if (currentPlayer.undos > 0) {
+		if (currentPlayer.getUndos() > 0) {
 			board = cloneForUndo;
 			printBoard();
 		}
@@ -213,7 +209,7 @@ public class MancalaGame implements Serializable {
 
 	/*
 	 * Helper method used to check if game is over
-	 * 
+	 *
 	 * return true if either player side pits are completely empty, false otherwise
 	 */
 	public void checkEndGame() {
@@ -225,7 +221,7 @@ public class MancalaGame implements Serializable {
 		for (int i = 7; i < 13; i++) {
 			total2 += board[i];
 		}
-		
+
 		if (total == 0 || total2 == 0) {
 			gameOver = true;
 		}
@@ -244,9 +240,9 @@ public class MancalaGame implements Serializable {
 	public void determineWinner() {
 		String winner = "";
 		if (board[6] > board[13])
-			winner = player1.name;
+			winner = player1.getName();
 		else if (board[6] < board[13])
-			winner = player2.name;
+			winner = player2.getName();
 		else {
 			System.out.println("The game is a tie");
 			return;
@@ -265,16 +261,15 @@ public class MancalaGame implements Serializable {
 	 * Switch players turn, resetting undos as we switch
 	 */
 	public void endTurn() {
-			currentPlayer.resetUndos();
-			if (currentPlayer == player1) {
-				currentPlayer = player2;
-			}
-			else {
-				currentPlayer = player1;
-			}
-			printBoard();
-			System.out.println("It is now " + currentPlayer.name + "'s turn");
-		
+		currentPlayer.resetUndos();
+		if (currentPlayer == player1) {
+			currentPlayer = player2;
+		} else {
+			currentPlayer = player1;
+		}
+		printBoard();
+		System.out.println("It is now " + currentPlayer.getName() + "'s turn");
+
 	}
 
 	/*
@@ -286,7 +281,7 @@ public class MancalaGame implements Serializable {
 
 	/*
 	 * Attach a listener to the model
-	 * 
+	 *
 	 * @param c change listener to be attached
 	 */
 	public void attach(ChangeListener c) {
@@ -313,19 +308,16 @@ public class MancalaGame implements Serializable {
 			OutputStream buffer = new BufferedOutputStream(file);
 			ObjectOutput output = new ObjectOutputStream(buffer);
 			try {
-				if(gameOver){
+				if (gameOver) {
 					//notify no need to save completed game
+				} else {
+					games.add(this);
+					output.writeObject(games);
 				}
-				else{
-				games.add(this);
-				output.writeObject(games);
-				}
-			}
-			finally {
+			} finally {
 				output.close();
 			}
-		}
-		catch (IOException e) {
+		} catch (IOException e) {
 			System.out.println("Save not successful");
 		}
 	}
@@ -347,13 +339,11 @@ public class MancalaGame implements Serializable {
 					// deserialize the List
 					ArrayList<MancalaGame> gamesFromFile = (ArrayList<MancalaGame>) input.readObject();
 					games = gamesFromFile;
-				}
-				finally {
+				} finally {
 					input.close();
 				}
 			}
-		}
-		finally {
+		} finally {
 			System.out.println("Load successful");
 		}
 	}
@@ -380,38 +370,13 @@ public class MancalaGame implements Serializable {
 		System.out.println("Invalid move. Please try again");
 	}
 
-	/*
-	 * Subclass used to create a player object for the game
-	 */
-	class Player {
-		private int undos;
-		private String name;
+	public void setBoardStyle(BoardStyle style) {
+		boardStyle = style;
+	}
 
-		/*
-		 * Initializes new player with given name, and sets und count to 3
-		 * 
-		 * @param n Name of player
-		 */
-		public Player(String n) {
-			name = n;
-			undos = 3;
-		}
+	public BoardStyle getChosenStyle() {
+		return boardStyle;
+	}
 
-		/*
-		 * Reset undos back to original count to three
-		 */
-		public void resetUndos() {
-			undos = 3;
-		}
-
-		/*
-		 * Returns player name in String variable
-		 * 
-		 * @return player's name
-		 */
-		public String getName() {
-			return name;
-		}
-	} // end of player class
 }// end of mancala class
 
