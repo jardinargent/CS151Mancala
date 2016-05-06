@@ -10,6 +10,7 @@ public class MancalaTester {
 		g1.move(8);
 		g1.move(1);
 		g1.undo();
+		g1.undo(); 
 	}
 
 }
