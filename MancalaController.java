@@ -12,11 +12,11 @@ import java.awt.event.ActionListener;
 public class MancalaController implements ActionListener {
 
 	private MancalaGame g;
-	private MancalaBoard b;
+	private Pit[] p;
 
-	public MancalaController(MancalaGame g, MancalaBoard b) {
+	public MancalaController(MancalaGame g, Pit[] p) {
 		this.g = g;
-		this.b = b;
+		this.p = p;
 	}
 
 	@Override

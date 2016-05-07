@@ -13,7 +13,7 @@ import java.awt.Shape;
 *~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 public interface BoardStyle {
 	
-	public Component[] getPits(); 
+	public Pit[] getPits(); 
 	public Color[] getColors(); 
 
 }
