@@ -24,6 +24,9 @@ public class Player {
 		undos = 3;
 	}
 
+	public void updateUndos() {
+		undos--;
+	}
 	public int getUndos() {
 		return undos;
 	}

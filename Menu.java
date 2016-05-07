@@ -75,12 +75,14 @@ public class Menu {
 
 		JButton three = createButton("3");
 		three.setBounds(200, 165, 50, 50);
+		three.setFocusable(false);
 		mainPanel.add(three);
 		countButton = new JButton[2];
 		countButton[0] = three;
 
 		JButton four = createButton("4");
 		four.setBounds(260, 165, 50, 50);
+		four.setFocusable(false);
 		mainPanel.add(four);
 		countButton[1] = four;
 
@@ -92,12 +94,14 @@ public class Menu {
 
 		JButton style1 = createButton("A");
 		style1.setBounds(200, 230, 50, 50);
+		style1.setFocusable(false);
 		mainPanel.add(style1);
 		layoutButton = new JButton[2];
 		layoutButton[0] = style1;
 
 		JButton style2 = createButton("B");
 		style2.setBounds(260, 230, 50, 50);
+		style2.setFocusable(false);
 		mainPanel.add(style2);
 		layoutButton[1] = style2;
 
@@ -105,6 +109,7 @@ public class Menu {
 		startGame.setFont(new Font("AR JULIAN", Font.PLAIN, 16));
 		startGame.setBackground(new Color(255, 166, 77));
 		startGame.setForeground(Color.WHITE);
+		startGame.setFocusable(false);
 		startGame.setBounds(200, 290, 150, 50);
 		mainPanel.add(startGame);
 

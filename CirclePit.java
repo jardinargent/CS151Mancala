@@ -12,13 +12,15 @@ class CirclePit extends JPanel implements Pit {
 	private int pitWidth;
 	private Ellipse2D.Double pit;
 	private Color pitColor;
+	private Color oColor;
 	private String pitName = "";
 	private int stoneNum;
 
-	public CirclePit(int pitNum, int pitWidth, Color c) {
+	public CirclePit(int pitNum, int pitWidth, Color pitColor, Color oColor) {
 		this.pitNum = pitNum;
 		this.pitWidth = pitWidth;
-		this.pitColor = c;
+		this.pitColor = pitColor;
+		this.oColor = oColor;
 
 		pit = new Ellipse2D.Double(0, 0, pitWidth, pitWidth);
 	}
@@ -26,7 +28,7 @@ class CirclePit extends JPanel implements Pit {
 	@Override
 	public void paintComponent(Graphics g) {
 		Graphics2D g2D = (Graphics2D) g;
-		System.out.println("Pit NUM: " + pitNum);
+		//System.out.println("Pit NUM: " + pitNum);
 		g2D.setColor(pitColor);
 		g2D.fill(pit);
 
@@ -37,27 +39,28 @@ class CirclePit extends JPanel implements Pit {
 			pitName = "Mancala 2";
 
 		else {
-			if (pitNum <6)
+			if (pitNum < 6)
 				pitName = "A" + String.valueOf(7 - pitNum);
 			else
 				pitName = "B" + String.valueOf(pitNum - 6);
 
 		}
-		g2D.setColor(Color.GRAY);
+		g2D.setColor(Color.LIGHT_GRAY);
 		g2D.drawString(pitName, 25, 70);
+
 
 		drawStoneCount(g2D);
 	}
 
 	private void drawStoneCount(Graphics2D g2D) {
-		g2D.setColor(Color.BLACK);
+		g2D.setColor(oColor);
 		g2D.setFont(new Font("Calibri", Font.BOLD, 20));
 		g2D.drawString(String.valueOf(this.stoneNum), 45, 45);
 	}
 
 	public void updateStoneCount(int stone) {
 		stoneNum = stone;
-		System.out.println("calling Repaint " + pitNum);
+		//System.out.println("calling Repaint " + pitNum);
 	}
 
 	public int getPitNum() {

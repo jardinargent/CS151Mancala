@@ -25,6 +25,9 @@ public class MancalaGame implements Serializable {
 	private int currentPit, stonesInHand;
 	private List<MancalaGame> games;
 	private BoardStyle boardStyle = null;
+	private boolean turnEnd;
+	public boolean invalidPrompted;
+	private String winner;
 
 	/*
 	 * Creates generic layout for Mancala game, having 6 pits on each side, one
@@ -43,6 +46,7 @@ public class MancalaGame implements Serializable {
 		}
 		gameOver = false;
 		games = new ArrayList<MancalaGame>();
+		listeners = new ArrayList<ChangeListener>();
 	}
 
 	/*
@@ -84,22 +88,26 @@ public class MancalaGame implements Serializable {
 	* @param pit pit which was selected by user
 	*/
 	public void move(int pit) {
-		cloneForUndo = board.clone(); // clone in case player chooses to
-		// undo
-		stonesInHand = 0;
-		currentPit = pit;
-		// check if player chose valid side
-		if (!isValid()) { // check if valid move
-			invalidMovePrompt();
-		}
-		if(isValid()){
-			stonesInHand = board[currentPit];
-			resetPit();
-			moveTo(stonesInHand, ++currentPit);
-			checkEndGame();
-			if (gameOver) {
-				determineWinner();
-		
+		System.out.println(currentPlayer.getName() + "turn end: " + turnEnd);
+		if (turnEnd != true) {
+			cloneForUndo = board.clone(); // clone in case player chooses to
+
+			// undo
+			stonesInHand = 0;
+			currentPit = pit;
+			// check if player chose valid side
+			if (!isValid()) { // check if valid move
+				invalidMovePrompt();
+			}
+			if (isValid()) {
+				stonesInHand = board[currentPit];
+				resetPit();
+				moveTo(stonesInHand, ++currentPit);
+				checkEndGame();
+				if (gameOver) {
+					determineWinner();
+
+				}
 			}
 		}
 	}
@@ -112,7 +120,7 @@ public class MancalaGame implements Serializable {
 	 * @param pit number of pit
 	 */
 	public void moveTo(int stonesInHand, int pit) {
-		printBoard();
+		//printBoard();
 		currentPit = pit;
 		if (currentPit == 14)
 			currentPit = 0; // loops pitNum to stay between 0 and 13
@@ -151,11 +159,12 @@ public class MancalaGame implements Serializable {
 		else {
 			board[currentPit]++;
 			stonesInHand = 0;
-			endTurn();
+			//endTurn();
+			turnEnd = true;
 		}
 	}
 
-	/*
+	/**
 	 * Checks if player has earned an extra turn by landing in own mancala on final stone
 	 *
 	 * return true if landed in own mancala pit, false otherwise
@@ -205,8 +214,11 @@ public class MancalaGame implements Serializable {
 	 */
 	public void undo() {
 		if (currentPlayer.getUndos() > 0) {
+			currentPlayer.updateUndos();
+			System.out.println("Current Player's Undos!" + currentPlayer.getUndos());
+			turnEnd = false;
 			board = cloneForUndo;
-			printBoard();
+			//printBoard();
 		}
 	}
 
@@ -241,7 +253,7 @@ public class MancalaGame implements Serializable {
 	 * Method used to calculate winner and print to screen
 	 */
 	public void determineWinner() {
-		String winner = "";
+		winner = "";
 		if (board[6] > board[13])
 			winner = player1.getName();
 		else if (board[6] < board[13])
@@ -264,6 +276,7 @@ public class MancalaGame implements Serializable {
 	 * Switch players turn, resetting undos as we switch
 	 */
 	public void endTurn() {
+		turnEnd = false;
 		currentPlayer.resetUndos();
 		if (currentPlayer == player1) {
 			currentPlayer = player2;
@@ -272,7 +285,6 @@ public class MancalaGame implements Serializable {
 		}
 		printBoard();
 		System.out.println("It is now " + currentPlayer.getName() + "'s turn");
-
 	}
 
 	/*
@@ -370,6 +382,7 @@ public class MancalaGame implements Serializable {
 	}
 
 	public void invalidMovePrompt() {
+		invalidPrompted = true;
 		System.out.println("Invalid move. Please try again");
 	}
 
@@ -377,20 +390,37 @@ public class MancalaGame implements Serializable {
 		boardStyle = style;
 	}
 
+
 	public BoardStyle getChosenStyle() {
 		return boardStyle;
 	}
-	public int getPit(int n, boolean undo){
-		if(undo)
-			return this.cloneForUndo[n]; 
+	public int getPit(int n, boolean undo) {
+		if (undo)
+			return this.cloneForUndo[n];
 		else
-		return this.board[n]; 
+			return this.board[n];
 	}
-	public Player getPlayer1(){
-		return this.player1; 
+	public Player getPlayer1() {
+		return this.player1;
 	}
-	public Player getPlayer2(){
+	public Player getPlayer2() {
 		return this.player2;
 	}
+	public boolean getEndTurn() {
+		return turnEnd;
+	}
+
+	public boolean gameOver() {
+		return gameOver;
+	}
+
+	public boolean noUndoBoard() {
+		return (cloneForUndo == null);
+	}
+
+	public String getWinner() {
+		return winner;
+	}
+
 }// end of mancala class
 

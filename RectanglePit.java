@@ -13,14 +13,15 @@ public class RectanglePit extends JPanel implements Pit {
 	private int pitWidth;
 	private Rectangle2D.Double pit;
 	private Color pitColor;
-	private String pitName = ""; 
+	private Color oColor;
+	private String pitName = "";
 	private int stoneNum;
 
-	public RectanglePit(int pitNum, int pitWidth, Color c) {
+	public RectanglePit(int pitNum, int pitWidth, Color pitColor, Color oColor) {
 		this.pitNum = pitNum;
 		this.pitWidth = pitWidth;
-		this.pitColor = c;
-
+		this.pitColor = pitColor;
+		this.oColor = oColor;
 		pit = new Rectangle2D.Double(0, 0, pitWidth, pitWidth);
 	}
 
@@ -42,20 +43,20 @@ public class RectanglePit extends JPanel implements Pit {
 			pitName = "Mancala 2";
 
 		else {
-			if (pitNum <6)
-				pitName = "A" + String.valueOf(7 - pitNum);
+			if (pitNum < 6)
+				pitName = "A" + String.valueOf(pitNum + 1);
 			else
 				pitName = "B" + String.valueOf(pitNum - 6);
 
 		}
-		g2D.setColor(Color.GRAY);
+		g2D.setColor(Color.LIGHT_GRAY);
 		g2D.drawString(pitName, 25, 70);
 
 		drawStoneCount(g2D);
 	}
 
 	private void drawStoneCount(Graphics2D g2D) {
-		g2D.setColor(Color.BLACK);
+		g2D.setColor(oColor);
 		g2D.setFont(new Font("Calibri", Font.BOLD, 20));
 		g2D.drawString(String.valueOf(this.stoneNum), 45, 45);
 	}
@@ -63,7 +64,7 @@ public class RectanglePit extends JPanel implements Pit {
 	public void updateStoneCount(int stone) {
 		stoneNum = stone;
 	}
-	
+
 	public int getPitNum() {
 		return pitNum;
 	}

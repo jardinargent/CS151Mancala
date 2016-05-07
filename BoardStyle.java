@@ -12,8 +12,8 @@ import java.awt.Shape;
 *  @version	1
 *~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 public interface BoardStyle {
-	
-	public Pit[] getPits(); 
-	public Color[] getColors(); 
+
+	public Pit[] getPits();
+	public Color[] getColors();
 
 }
