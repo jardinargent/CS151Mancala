@@ -377,6 +377,17 @@ public class MancalaGame implements Serializable {
 	public BoardStyle getChosenStyle() {
 		return boardStyle;
 	}
-
+	public int getPit(int n, boolean undo){
+		if(undo)
+			return this.cloneForUndo[n]; 
+		else
+		return this.board[n]; 
+	}
+	public Player getPlayer1(){
+		return this.player1; 
+	}
+	public Player getPlayer2(){
+		return this.player2;
+	}
 }// end of mancala class
 

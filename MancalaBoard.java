@@ -1,9 +1,18 @@
+import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Component;
+import java.awt.Dimension;
+import java.awt.FlowLayout;
+import java.awt.GridLayout;
 import java.awt.Shape;
+import java.awt.geom.Rectangle2D;
 
+import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 
 /**~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 *  Class:	MancalaBoard
@@ -12,40 +21,55 @@ import javax.swing.JPanel;
 *  Date:	5/2/2016
 *  @version	1
 *~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
-public class MancalaBoard {
+public class MancalaBoard implements ChangeListener{
 
 	private MancalaGame game;
 	private BoardStyle style;
 	private JFrame mainFrame;
-	private JPanel mainPanel;
-	private JLabel[] pitLabels; //0-5 player1, 6-11 player2
-	private Shape mancalaPit1;
-	private Shape mancalaPit2;
-
+	private JPanel mainPanel; 
+	private JPanel contentPanel;
+	private JPanel labelPanel; 
+	private JLabel[] labelArray; 
+	
 	public MancalaBoard(MancalaGame game) {
 		this.game = game;
 		System.out.println("Makes a new board!");
 		style = game.getChosenStyle();
-		pitLabels = new JLabel[12];
 		createBoard();
 	}
 
 	private void createBoard() {
 		mainFrame = new JFrame();
-		mainFrame.setSize(1000, 500);
-		mainFrame.getContentPane().add(createContent());
+		mainFrame.setSize(1000, 250);
+		mainFrame.add(createContent());
 		mainFrame.setVisible(true);
 		mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	}
-
 	private Component createContent() {
-		mainPanel = new JPanel();
-		mainPanel.setLayout(null);
-		mainPanel.setSize(1000, 500);
+		//createSmallLabels(); 
+		contentPanel = new JPanel();
+		contentPanel.setSize(1000, 250);
+		contentPanel.setBackground(Color.WHITE);
+		contentPanel.setLayout(new GridLayout(2,8,3,3)); 
+		
+		Component[] pitArray = this.style.getPits(); 
 
-		return mainPanel;
+		for(int i = 0; i<=6; i++){ 
+			contentPanel.add(pitArray[i]);
+		}
+		
+		contentPanel.add(new ScorePanel(game.getPlayer1())); 
+		contentPanel.add(new ScorePanel(game.getPlayer2())); 
+		
+		for(int i = 7; i<=13; i++){ 
+			contentPanel.add(pitArray[i]);
+		}	
+		return contentPanel;
 	}
 
-
-
+	@Override
+	public void stateChanged(ChangeEvent arg0) {
+		// TODO Auto-generated method stub
+		
+	}
 }

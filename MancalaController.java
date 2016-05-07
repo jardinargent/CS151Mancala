@@ -21,7 +21,7 @@ public class MancalaController implements ActionListener {
 
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
-
+		
 	}
 
 }
