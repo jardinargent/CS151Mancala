@@ -62,7 +62,6 @@ public class RectanglePit extends JPanel implements Pit {
 
 	public void updateStoneCount(int stone) {
 		stoneNum = stone;
-		this.repaint();
 	}
 	
 	public int getPitNum() {

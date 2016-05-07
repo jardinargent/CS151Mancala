@@ -32,10 +32,15 @@ public class MancalaBoard implements ChangeListener{
 	private JPanel mainPanel; 
 	private JPanel contentPanel;
 	private JPanel labelPanel; 
-	private JLabel[] labelArray; 
+	private JLabel[] labelArray;
+	private ScorePanel player1; 
+	private ScorePanel player2; 
 	
 	public MancalaBoard(MancalaGame game) {
 		this.game = game;
+		player1 = new ScorePanel(game.getPlayer1()); 
+		player2 = new ScorePanel(game.getPlayer2());
+		
 		System.out.println("Makes a new board!");
 		style = game.getChosenStyle();
 		createBoard();
@@ -62,8 +67,8 @@ public class MancalaBoard implements ChangeListener{
 			contentPanel.add((Component) pitArray[i]);
 		}	
 		
-		contentPanel.add(new ScorePanel(game.getPlayer2())); 
-		contentPanel.add(new ScorePanel(game.getPlayer1())); 
+		contentPanel.add(player2); 
+		contentPanel.add(player1); 
 
 		//player1's pits 
 		for(int i = 0; i<=6; i++){ 
@@ -86,9 +91,13 @@ public class MancalaBoard implements ChangeListener{
                     int pit = ((Pit) pan).getPitNum(); 
                     game.move(pit);
                     for(int i = 0; i<14; i++){
-                    	pitArray[i].updateStoneCount(game.getPit(i, false)); 
+                    	pitArray[i].updateStoneCount(game.getPit(i, false));
+                    	if(i==6)
+                   		 player1.refresh(game.getPit(6, false));
+                    	if(i == 13)
+                            player2.refresh(game.getPit(13, false));
                     }
-                    	
+                    contentPanel.repaint();
                 }
 			}); 
 		}

@@ -26,7 +26,7 @@ class CirclePit extends JPanel implements Pit {
 	@Override
 	public void paintComponent(Graphics g) {
 		Graphics2D g2D = (Graphics2D) g;
-
+		System.out.println("Pit NUM: " + pitNum);
 		g2D.setColor(pitColor);
 		g2D.fill(pit);
 
@@ -57,7 +57,7 @@ class CirclePit extends JPanel implements Pit {
 
 	public void updateStoneCount(int stone) {
 		stoneNum = stone;
-		repaint();
+		System.out.println("calling Repaint " + pitNum);
 	}
 
 	public int getPitNum() {

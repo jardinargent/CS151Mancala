@@ -89,15 +89,18 @@ public class MancalaGame implements Serializable {
 		stonesInHand = 0;
 		currentPit = pit;
 		// check if player chose valid side
-		while (!isValid()) { // check if valid move
+		if (!isValid()) { // check if valid move
 			invalidMovePrompt();
 		}
-		stonesInHand = board[currentPit];
-		resetPit();
-		moveTo(stonesInHand, ++currentPit);
-		checkEndGame();
-		if (gameOver) {
-			determineWinner();
+		if(isValid()){
+			stonesInHand = board[currentPit];
+			resetPit();
+			moveTo(stonesInHand, ++currentPit);
+			checkEndGame();
+			if (gameOver) {
+				determineWinner();
+		
+			}
 		}
 	}
 

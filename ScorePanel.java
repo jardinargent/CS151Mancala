@@ -29,7 +29,7 @@ public class ScorePanel extends JPanel{
 	        p1.setBackground(Color.WHITE);
 	        
 	        nameLabel.setBounds(10,0,60,60);
-	        score.setBounds(30,60,60,60);
+	        score.setBounds(30,30,60,60);
 	        
 	        p1.add(nameLabel);
 	        p1.add(score);
