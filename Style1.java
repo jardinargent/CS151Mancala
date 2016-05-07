@@ -27,14 +27,22 @@ public class Style1 implements BoardStyle {
 		pitArray = new Pit[14];
 
 		for (int i = 0; i < 14; i++) {
-			if (i < 6)
-				pitArray[i] = new RectanglePit(i, 100, player1, player2);
-			else if (i >= 7 && i != 13)
-				pitArray[i] = new RectanglePit(i, 100, player2, player1);
-			else if (i == 13)
-				pitArray[i] = new CirclePit(i, 100, player2, player1);
-			else if (i == 6)
-				pitArray[i] = new CirclePit(i, 100, player1, player2);
+			if (i < 6){
+				pitArray[i] = new RectanglePit(i, 100, player1, player2, 1);
+				pitArray[i].isPlaying(true);
+			}
+			else if (i >= 7 && i != 13){
+				pitArray[i] = new RectanglePit(i, 100, player2, player1,2);
+				pitArray[i].isPlaying(false);
+			}
+			else if (i == 13){
+				pitArray[i] = new CirclePit(i, 100, player2, player1,2);
+				pitArray[i].isPlaying(false);
+			}
+			else if (i == 6){
+				pitArray[i] = new CirclePit(i, 100, player1, player2,1);
+				pitArray[i].isPlaying(true);
+			}
 		}
 	}
 

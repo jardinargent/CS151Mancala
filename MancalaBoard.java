@@ -17,6 +17,7 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.UIManager;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
@@ -48,6 +49,13 @@ public class MancalaBoard implements ChangeListener {
 	public MancalaBoard(MancalaGame game) {
 		this.game = game;
 		game.attach(this);
+		
+		 /*try {
+             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+         } catch (Exception ex) {
+        	 ex.printStackTrace();
+         }*/
+		 
 		mainPanel = new JPanel(new BorderLayout());
 		mainPanel.setSize(1000, 300);
 		mainPanel.add(new TitlePanel(), BorderLayout.NORTH);
@@ -113,6 +121,14 @@ public class MancalaBoard implements ChangeListener {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				game.endTurn();
+				int cPlayer = game.getCurrentPlayer().getPlayNum(); 
+				for(int i = 0; i<14; i++){ 
+					if(pitArray[i].player() == cPlayer){
+						pitArray[i].isPlaying(true);
+					}
+					else 
+						pitArray[i].isPlaying(false);
+				}
 				stateChanged(new ChangeEvent(this));
 			}
 		});
@@ -175,7 +191,7 @@ public class MancalaBoard implements ChangeListener {
 				public void mousePressed(MouseEvent e) {
 					System.out.println("Its coming here!!");
 					int pit = ((Pit) pan).getPitNum();
-					game.move(pit);
+					game.update(pit);
 					for (int i = 0; i < 14; i++) {
 						pitArray[i].updateStoneCount(game.getPit(i, false));
 						if (i == 6)
@@ -183,7 +199,6 @@ public class MancalaBoard implements ChangeListener {
 						if (i == 13)
 							player2.refresh(game.getPit(13, false));
 					}
-					stateChanged(new ChangeEvent(this));
 				}
 			});
 		}

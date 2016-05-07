@@ -1,4 +1,3 @@
-
 public class Player {
 
 	/*
@@ -7,12 +6,14 @@ public class Player {
 	private int undos;
 	private String name;
 	private boolean isPlaying;
+	private int playNum;
 	/*
 	 * Initializes new player with given name, and sets und count to 3
 	 *
 	 * @param n Name of player
 	 */
-	public Player(String n) {
+	public Player(String n, int playNum) {
+		this.playNum = playNum;
 		name = n;
 		undos = 3;
 	}
@@ -37,6 +38,10 @@ public class Player {
 	 */
 	public String getName() {
 		return name;
+	}
+	
+	public int getPlayNum(){
+		return playNum; 
 	}
 
 	public boolean isCurrentPlayer() {

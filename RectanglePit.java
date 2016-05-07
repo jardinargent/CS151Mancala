@@ -1,3 +1,4 @@
+import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
@@ -16,12 +17,15 @@ public class RectanglePit extends JPanel implements Pit {
 	private Color oColor;
 	private String pitName = "";
 	private int stoneNum;
-
-	public RectanglePit(int pitNum, int pitWidth, Color pitColor, Color oColor) {
+	private int playNum; 
+	private boolean inPlay; 
+	
+	public RectanglePit(int pitNum, int pitWidth, Color pitColor, Color oColor, int player) {
 		this.pitNum = pitNum;
 		this.pitWidth = pitWidth;
 		this.pitColor = pitColor;
 		this.oColor = oColor;
+		playNum = player;
 		pit = new Rectangle2D.Double(0, 0, pitWidth, pitWidth);
 	}
 
@@ -32,9 +36,14 @@ public class RectanglePit extends JPanel implements Pit {
 	@Override
 	public void paintComponent(Graphics g) {
 		Graphics2D g2D = (Graphics2D) g;
-
-		g2D.setColor(pitColor);
+		if(inPlay)
+			g2D.setColor(pitColor);
+		else 
+			g2D.setColor(Color.GRAY);
+		
 		g2D.fill(pit);
+		g2D.setColor(oColor);
+		g2D.setStroke(new BasicStroke(5));
 
 		if (pitNum == 6)
 			pitName = "Mancala 1";
@@ -67,5 +76,11 @@ public class RectanglePit extends JPanel implements Pit {
 
 	public int getPitNum() {
 		return pitNum;
+	}
+	public void isPlaying(boolean inPlay){ 
+		this.inPlay = inPlay; 
+	}
+	public int player() {
+		return playNum;
 	}
 }

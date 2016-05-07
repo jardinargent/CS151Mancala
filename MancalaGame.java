@@ -67,8 +67,8 @@ public class MancalaGame implements Serializable {
 				board[i] = originalCount;
 			}
 		}
-		player1 = new Player(p1);
-		player2 = new Player(p2);
+		player1 = new Player(p1,1);
+		player2 = new Player(p2,2);
 		currentPlayer = player1;
 		cloneForRestart = board.clone(); // save board layout for restart button
 		printBoard();
@@ -199,12 +199,19 @@ public class MancalaGame implements Serializable {
 	 * return true if current pit is on current player's side of board excluding scoring pits, false otherwise
 	 */
 	public boolean isValid() {
-		if (isPlayer1() && currentPit < 7 && currentPit != 6)
+		if (isPlayer1() && currentPit < 7 && currentPit != 6) {
+			if (board[currentPit] == 0) {
+				return false;
+			}
 			return true; // check appropriate side of board, excluding scoring
+		}
 		// pit
-		else if (!isPlayer1() && currentPit >= 7 && currentPit != 13)
+		else if (!isPlayer1() && currentPit >= 7 && currentPit != 13) {
+			if (board[currentPit] == 0) {
+				return false;
+			}
 			return true;
-		else {
+		} else {
 			return false;
 		}
 	}
