@@ -85,6 +85,7 @@ public class MancalaBoard implements ChangeListener {
 
 		mainPanel.add(createButtonPanel(), BorderLayout.SOUTH);
 		mainFrame.add(mainPanel);
+		mainFrame.setResizable(false);
 		mainFrame.setVisible(true);
 		mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	}
@@ -148,6 +149,7 @@ public class MancalaBoard implements ChangeListener {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				System.out.println("Thank You!");
 				mainFrame.dispose();
 			}
 

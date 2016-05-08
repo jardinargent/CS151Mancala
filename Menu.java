@@ -50,6 +50,7 @@ public class Menu {
 		frame.setTitle("Main Menu");
 		frame.setSize(500, 500);
 		frame.getContentPane().add(createPanel());
+		frame.setResizable(false);
 		frame.setVisible(true);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	}
