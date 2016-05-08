@@ -1,3 +1,11 @@
+/**~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+*  Class:	TitlePanel
+*  File: 	TitlePanel.java
+*  Description:	Creates the Header Panel in game board
+*  Date:	5/2/2016
+*  @author  Team we.excelAt(ood)
+*  @version	1
+*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
@@ -12,6 +20,9 @@ import javax.swing.JPanel;
 public class TitlePanel extends JPanel {
 
 	JLabel titleLabel;
+	/**
+	 * Constructor initializes title panel for game board
+	 */
 	public TitlePanel() {
 		setSize(1000, 300);
 		titleLabel = new JLabel("M A N C A L A");
@@ -19,7 +30,11 @@ public class TitlePanel extends JPanel {
 		titleLabel.setForeground(Color.BLACK);
 		add(titleLabel);
 	}
-
+	
+	/**
+	 * Overrides paint component of JPanel
+	 * @param g  Graphics object
+	 */
 	@Override
 	protected void paintComponent(Graphics g) {
 		super.paintComponent(g);

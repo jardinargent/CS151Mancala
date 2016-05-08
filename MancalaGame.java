@@ -1,3 +1,12 @@
+/**~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+*  Class:	MancalaGame
+*  File: 	MancalaGame.java
+*  Description:	Class keeps track of data,current player and other
+*  pertaining information throughout the game
+*  Date:	5/2/2016
+*  @author  Team we.excelAt(ood)
+*  @version	1
+*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.File;
@@ -29,8 +38,8 @@ public class MancalaGame implements Serializable {
 	public boolean invalidPrompted;
 	private String winner;
 
-	/*
-	 * Creates generic layout for Mancala game, having 6 pits on each side, one
+	/**
+	 * Constructor, Creates generic layout for Mancala game, having 6 pits on each side, one
 	 * scoring pit for each player and initializing all pits to value of 0. Pit
 	 * numbering in array is as follows:
 	 *  13   12 11 10 9 8 7         {Player 2}
@@ -49,7 +58,7 @@ public class MancalaGame implements Serializable {
 		listeners = new ArrayList<ChangeListener>();
 	}
 
-	/*
+	/**
 	 * Start a new game with given players and stones in each pit
 	 *
 	 * @param p1 name of player 1
@@ -71,11 +80,11 @@ public class MancalaGame implements Serializable {
 		player2 = new Player(p2,2);
 		currentPlayer = player1;
 		cloneForRestart = board.clone(); // save board layout for restart button
-		printBoard();
+		//printBoard();
 		System.out.println("It is now " + currentPlayer.getName() + "'s turn");
 	}
 
-	/*
+	/**
 	 * Checks if current player is player1 return true if player1, false
 	 * otherwise
 	 */
@@ -83,12 +92,12 @@ public class MancalaGame implements Serializable {
 		return currentPlayer.equals(player1);
 	}
 
-	/*
+	/**
 	* Move method, used for initial move where a pit is selected
 	* @param pit pit which was selected by user
 	*/
 	public void move(int pit) {
-		System.out.println(currentPlayer.getName() + "turn end: " + turnEnd);
+		//System.out.println(currentPlayer.getName() + "turn end: " + turnEnd);
 		if (turnEnd != true) {
 			cloneForUndo = board.clone(); // clone in case player chooses to
 
@@ -112,7 +121,7 @@ public class MancalaGame implements Serializable {
 		}
 	}
 
-	/*
+	/**
 	 * Move to method, used for traversing mancala board after picking up stones from initial pit
 	 *
 	 * @param stonesInHand stones currently in hand
@@ -167,7 +176,7 @@ public class MancalaGame implements Serializable {
 	/**
 	 * Checks if player has earned an extra turn by landing in own mancala on final stone
 	 *
-	 * return true if landed in own mancala pit, false otherwise
+	 * @return true if landed in own mancala pit, false otherwise
 	 */
 	public boolean extraTurn() {
 		if (isPlayer1() && currentPit == 6 || !isPlayer1() && currentPit == 13) {
@@ -177,7 +186,7 @@ public class MancalaGame implements Serializable {
 		}
 	}
 
-	/*
+	/**
 	 * Player landed in empty pit of own side. Gets the final stone he had in
 	 * hand plus pit directly across, places total in own mancala
 	 */
@@ -192,11 +201,11 @@ public class MancalaGame implements Serializable {
 		}
 	}
 
-	/*
+	/**
 	 * Used to check that current pit is valid, meaning on current player's side
 	 * of board
 	 *
-	 * return true if current pit is on current player's side of board excluding scoring pits, false otherwise
+	 * @return true if current pit is on current player's side of board excluding scoring pits, false otherwise
 	 */
 	public boolean isValid() {
 		if (isPlayer1() && currentPit < 7 && currentPit != 6) {
@@ -216,20 +225,20 @@ public class MancalaGame implements Serializable {
 		}
 	}
 
-	/*
+	/**
 	 * Undo move to previous state
 	 */
 	public void undo() {
 		if (currentPlayer.getUndos() > 0) {
 			currentPlayer.updateUndos();
-			System.out.println("Current Player's Undos!" + currentPlayer.getUndos());
+			//System.out.println("Current Player's Undos!" + currentPlayer.getUndos());
 			turnEnd = false;
 			board = cloneForUndo;
 			//printBoard();
 		}
 	}
 
-	/*
+	/**
 	 * Helper method used to check if game is over
 	 *
 	 * return true if either player side pits are completely empty, false otherwise
@@ -249,14 +258,14 @@ public class MancalaGame implements Serializable {
 		}
 	}
 
-	/*
+	/**
 	 * Resets pit
 	 */
 	public void resetPit() {
 		board[currentPit] = 0;
 	}
 
-	/*
+	/**
 	 * Method used to calculate winner and print to screen
 	 */
 	public void determineWinner() {
@@ -272,14 +281,14 @@ public class MancalaGame implements Serializable {
 		System.out.println(winner + " is the winner");
 	}
 
-	/*
+	/**
 	 * Begin current game from start state, with same settings and players
 	 */
 	public void restart() {
 		board = cloneForRestart;
 	}
 
-	/*
+	/**
 	 * Switch players turn, resetting undos as we switch
 	 */
 	public void endTurn() {
@@ -294,24 +303,26 @@ public class MancalaGame implements Serializable {
 		System.out.println("It is now " + currentPlayer.getName() + "'s turn");
 	}
 
-	/*
+	/**
 	 * Returns current player
+	 * 
+	 * @return current player
 	 */
 	public Player getCurrentPlayer() {
 		return currentPlayer;
 	}
 
-	/*
+	/**
 	 * Attach a listener to the model
-	 *
 	 * @param c change listener to be attached
 	 */
 	public void attach(ChangeListener c) {
 		listeners.add(c);
 	}
 
-	/*
+	/**
 	 * Choose pit for move param pit pit number that was chosen for move
+	 * Notifies the attached views of change 
 	 */
 	public void update(int pit) {
 		move(pit);
@@ -320,7 +331,7 @@ public class MancalaGame implements Serializable {
 		}
 	}
 
-	/*
+	/**
 	 * Save current state of game
 	 */
 	public void save() {
@@ -344,7 +355,7 @@ public class MancalaGame implements Serializable {
 		}
 	}
 
-	/*
+	/**
 	 * Load games on file
 	 */
 	public void load() throws IOException, ClassNotFoundException {
@@ -370,7 +381,7 @@ public class MancalaGame implements Serializable {
 		}
 	}
 
-	/*
+	/**
 	 * Prints simple laout to console for testing
 	 */
 	public void printBoard() {
@@ -388,43 +399,88 @@ public class MancalaGame implements Serializable {
 		System.out.println();
 	}
 
+	/**
+	 * Prints out an invalid prompt to console
+	 */
 	public void invalidMovePrompt() {
 		invalidPrompted = true;
 		System.out.println("Invalid move. Please try again");
 	}
 
+	/**
+	 * Sets board's chosen style
+	 * @param style Style user picked 
+	 */
 	public void setBoardStyle(BoardStyle style) {
 		boardStyle = style;
 	}
 
-
+	/**
+	 * Returns the board style chosen by the user 
+	 * @return returns chosen style
+	 */
 	public BoardStyle getChosenStyle() {
 		return boardStyle;
 	}
+	
+	/**
+	 * Gets stones in the pit number specified, if undo
+	 * then stone number is retrieved from cloned board 
+	 * @param n the pit number 	
+	 * @param undo if this is an undo
+	 * @return number of stones in pit 
+	 */
 	public int getPit(int n, boolean undo) {
 		if (undo)
 			return this.cloneForUndo[n];
 		else
 			return this.board[n];
 	}
+	
+	/**
+	 * Returns Player 1
+	 * @return player1
+	 */
 	public Player getPlayer1() {
 		return this.player1;
 	}
+	
+	/**
+	 * Returns Player 2
+	 * @return player2
+	 */
 	public Player getPlayer2() {
 		return this.player2;
 	}
+	
+	/**
+	 * Returns if current player's turn ended 
+	 * @return true if turn ended 
+	 */
 	public boolean getEndTurn() {
 		return turnEnd;
 	}
 
+	/**
+	 * Returns if game is over or not 
+	 * @return true if game over 
+	 */
 	public boolean gameOver() {
 		return gameOver;
 	}
 
+	/**
+	 * Checks if there is a board for undoing
+	 * @return true if undo board exists
+	 */
 	public boolean noUndoBoard() {
 		return (cloneForUndo == null);
 	}
 
+	/**
+	 * Retrieves name of winner
+	 * @return string of winner
+	 */
 	public String getWinner() {
 		return winner;
 	}

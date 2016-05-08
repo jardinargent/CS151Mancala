@@ -1,3 +1,11 @@
+/**~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+*  Class:	ScorePanel
+*  File: 	ScorePanel.java
+*  Description:	Creates the score panel for players 1 and 2
+*  Date:	5/2/2016
+*  @author  Team we.excelAt(ood)
+*  @version	1
+*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Font;
@@ -10,6 +18,10 @@ public class ScorePanel extends JPanel {
 	private JLabel nameLabel;
 	private JLabel score;
 
+	/**
+	 * Constructor initializes score panel for given player 
+	 * @param p
+	 */
 	public ScorePanel (Player p) {
 		String playerName = p.getName();
 
@@ -37,6 +49,11 @@ public class ScorePanel extends JPanel {
 		this.setLayout(new BorderLayout());
 		this.add (p1, BorderLayout.CENTER);
 	}
+	
+	/**
+	 * Method updates players points
+	 * @param points 	 new number of points for player
+	 */
 	public void refresh(int points) {
 		String s = String.valueOf(points);
 		score.setText(s);

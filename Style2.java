@@ -1,3 +1,11 @@
+/**~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+*  Class:	Style2
+*  File: 	Style2.java
+*  Description:	Creates a board with Rectangular mancala and Circular pits 
+*  Date:	5/2/2016
+*  @author  Team we.excelAt(ood)
+*  @version	1
+*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Container;
@@ -10,21 +18,18 @@ import java.awt.geom.Ellipse2D;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 
-/**~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-*  Class:	Style2
-*  File: 	Style2.java
-*  Description:	Style2
-*  Date:	5/2/2016
-*  @version	1
-*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 public class Style2 implements BoardStyle {
-//circlePit and colors: blue, yellow
+
 	private Color player1;
 	private Color player2;
 
 	private Pit[] pitArray; // 0-6 player1, 7-13 player2
 	private Color[] playerColors;
 
+	/**
+	 * Constructor initializes style with Rectangular mancalas and 
+	 * Circular pits 
+	 */
 	public Style2() {
 		player1 = new Color(0, 172, 230);
 		player2 = new Color(0, 51, 102);
@@ -54,15 +59,28 @@ public class Style2 implements BoardStyle {
 			}
 		}
 	}
+	
+	/**
+	 * Returns string to indicate the style this is
+	 * @return String returns whether this is style1 or style2
+	 */
 	public String toString() {
-		return "This is the style2 object!";
+		return "Style 2 chosen: Rectangular Mancala | Circular Pit";
 	}
 
+	/**
+	 * Returns the array of pits 
+	 * @return array of all Pits on game board 
+	 */
 	@Override
 	public Pit[] getPits() {
 		return this.pitArray;
 	}
 
+	/**
+	 * Returns the color array for this style
+	 * @return color array
+	 */
 	public Color[] getColors() {
 		return this.playerColors;
 	}

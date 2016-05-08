@@ -1,3 +1,11 @@
+/**~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+*  Class:	MancalaBoard
+*  File: 	MancalaBoard.java
+*  Description:	Class serves as the view and controller portion of MVC
+*  Date:	5/2/2016
+*  @author  Team we.excelAt(ood)
+*  @version	1
+*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
@@ -21,13 +29,6 @@ import javax.swing.UIManager;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
-/**~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-*  Class:	MancalaBoard
-*  File: 	MancalaBoard.java
-*  Description:	Class serves as the view portion of MVC
-*  Date:	5/2/2016
-*  @version	1
-*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 public class MancalaBoard implements ChangeListener {
 
 	private MancalaGame game;
@@ -46,6 +47,10 @@ public class MancalaBoard implements ChangeListener {
 	private Pit[] pitArray;
 	private Color[] colorArray;
 
+	/**
+	 * Constructor initializes a MancalaBoard
+	 * @param game the MancalaGame this board is associated with
+	 */
 	public MancalaBoard(MancalaGame game) {
 		this.game = game;
 		game.attach(this);
@@ -63,7 +68,7 @@ public class MancalaBoard implements ChangeListener {
 		player1 = new ScorePanel(game.getPlayer1());
 		player2 = new ScorePanel(game.getPlayer2());
 
-		System.out.println("Makes a new board!");
+		//System.out.println("Makes a new board!");
 		style = game.getChosenStyle();
 		pitArray = this.style.getPits();
 		colorArray = this.style.getColors();
@@ -73,6 +78,7 @@ public class MancalaBoard implements ChangeListener {
 	private void createBoard() {
 		mainFrame = new JFrame();
 		mainFrame.setSize(1000, 350);
+		mainFrame.setTitle("Mancala- From, Team we.excelAt(ood)");
 
 		mainPanel.setBackground(Color.WHITE);
 		mainPanel.add(createContent());
@@ -189,7 +195,7 @@ public class MancalaBoard implements ChangeListener {
 			JPanel pan = (JPanel) p[i];
 			pan.addMouseListener(new MouseAdapter() {
 				public void mousePressed(MouseEvent e) {
-					System.out.println("Its coming here!!");
+					//System.out.println("Its coming here!!");
 					int pit = ((Pit) pan).getPitNum();
 					game.update(pit);
 					for (int i = 0; i < 14; i++) {
@@ -205,11 +211,17 @@ public class MancalaBoard implements ChangeListener {
 
 	}
 
+	/**
+	 * When the state changes, the content panel repaints
+	 * 
+	 * @param e  The ChangeEvent that captures a change 
+	 * 			(in this case, moving mancala stones calls the stateChanged) 
+	 */
 	@Override
 	public void stateChanged(ChangeEvent e) {
 		contentPanel.repaint();
 		if (game.getCurrentPlayer().getUndos() == 0 || game.noUndoBoard()) {
-			System.out.println(game.getCurrentPlayer().getName());
+			//System.out.println(game.getCurrentPlayer().getName());
 			undo.setEnabled(false);
 		} else
 			undo.setEnabled(true);
@@ -247,7 +259,10 @@ public class MancalaBoard implements ChangeListener {
 		}
 
 		if (game.gameOver()) {
-			messageLabel.setText(game.getWinner() + " won the game!!");
+			if(game.getWinner().equals(""))
+				messageLabel.setText(" The game is a TIE!");
+			else 
+				messageLabel.setText(game.getWinner() + " won the game!!");
 			undo.setEnabled(false);
 			endTurn.setEnabled(false);
 		}

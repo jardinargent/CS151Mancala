@@ -38,6 +38,10 @@ public class Menu {
 	private BoardStyle board;
 	private int stoneCount;
 
+	/**
+	 * Constructor initializes the menu
+	 * @param game the MancalaGame to use throughout the session
+	 */
 	public Menu(MancalaGame game) {
 		stoneCount = 0;
 		board = null;
