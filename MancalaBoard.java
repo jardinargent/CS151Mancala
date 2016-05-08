@@ -124,6 +124,7 @@ public class MancalaBoard implements ChangeListener {
 		endTurn.setFont(new Font("Calibri", Font.BOLD, 15));
 		endTurn.setBackground(colorArray[0]);
 		endTurn.setForeground(colorArray[1]);
+		endTurn.setEnabled(false);
 		endTurn.setFocusable(false);
 		endTurn.addActionListener(new ActionListener() {
 
@@ -167,7 +168,7 @@ public class MancalaBoard implements ChangeListener {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				new Menu(game);
+				new Menu(new MancalaGame());
 				mainFrame.dispose();
 			}
 			
@@ -278,7 +279,7 @@ public class MancalaBoard implements ChangeListener {
 			messageLabel.setText("   " + game.getCurrentPlayer().getName() + "'s Turn");
 		}
 		/*         MessageLabel  End     */
-		if (game.extraTurn()) {
+		if (game.extraTurn() || game.madeMove==false) {
 			endTurn.setEnabled(false);
 		} else
 			endTurn.setEnabled(true);

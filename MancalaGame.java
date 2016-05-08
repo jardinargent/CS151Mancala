@@ -36,6 +36,7 @@ public class MancalaGame implements Serializable {
 	private BoardStyle boardStyle = null;
 	private boolean turnEnd;
 	public boolean invalidPrompted;
+	public boolean madeMove = false; 
 	private String winner;
 
 	/**
@@ -98,6 +99,7 @@ public class MancalaGame implements Serializable {
 	* @param pit pit which was selected by user
 	*/
 	public void move(int pit) {
+		madeMove = true;
 		//System.out.println(currentPlayer.getName() + "turn end: " + turnEnd);
 		if (turnEnd != true) {
 			cloneForUndo = board.clone(); // clone in case player chooses to
@@ -238,6 +240,7 @@ public class MancalaGame implements Serializable {
 			currentPlayer.updateUndos();
 			//System.out.println("Current Player's Undos!" + currentPlayer.getUndos());
 			turnEnd = false;
+			madeMove = false;
 			board = cloneForUndo;
 			//printBoard();
 		}
@@ -300,6 +303,7 @@ public class MancalaGame implements Serializable {
 	 */
 	public void endTurn() {
 		turnEnd = false;
+		madeMove = false;
 		currentPlayer.resetUndos();
 		if (currentPlayer == player1) {
 			currentPlayer = player2;
