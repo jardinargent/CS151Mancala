@@ -1,6 +1,6 @@
 /**~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-*  Class:	TesterClass
-*  File: 	TesterClass.java
+*  Class:	MancalaTest
+*  File: 	MancalaTest.java
 *  Description:	For Running the game 
 *  Date:	5/2/2016
 *  @author  Team we.excelAt(ood)
