@@ -47,6 +47,7 @@ public class Menu {
 		board = null;
 		this.game = game;
 		frame =  new JFrame();
+		frame.setTitle("Main Menu");
 		frame.setSize(500, 500);
 		frame.getContentPane().add(createPanel());
 		frame.setVisible(true);
@@ -97,6 +98,7 @@ public class Menu {
 		mainPanel.add(boardLabel);
 
 		JButton style1 = createButton("A");
+		style1.setToolTipText("Style 1: Circular Mancala | Rectangular Pit");
 		style1.setBounds(200, 230, 50, 50);
 		style1.setFocusable(false);
 		mainPanel.add(style1);
@@ -104,6 +106,7 @@ public class Menu {
 		layoutButton[0] = style1;
 
 		JButton style2 = createButton("B");
+		style2.setToolTipText("Style 2: Rectangular Mancala | Circular Pit");
 		style2.setBounds(260, 230, 50, 50);
 		style2.setFocusable(false);
 		mainPanel.add(style2);

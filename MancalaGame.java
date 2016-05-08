@@ -299,7 +299,7 @@ public class MancalaGame implements Serializable {
 		} else {
 			currentPlayer = player1;
 		}
-		printBoard();
+		//printBoard();
 		System.out.println("It is now " + currentPlayer.getName() + "'s turn");
 	}
 
