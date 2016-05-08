@@ -29,7 +29,7 @@ import javax.swing.event.ChangeListener;
 public class MancalaGame implements Serializable {
 	private Player player1, player2, currentPlayer;
 	private boolean gameOver;
-	private int[] board, cloneForRestart, cloneForUndo;
+	private int[] board, cloneForUndo;
 	ArrayList<ChangeListener> listeners;
 	private int currentPit, stonesInHand;
 	private List<MancalaGame> games;
@@ -38,6 +38,7 @@ public class MancalaGame implements Serializable {
 	public boolean invalidPrompted;
 	public boolean madeMove = false; 
 	private String winner;
+	private int originalCount; 
 
 	/**
 	 * Constructor, Creates generic layout for Mancala game, having 6 pits on each side, one
@@ -69,10 +70,10 @@ public class MancalaGame implements Serializable {
 	 * starting
 	 */
 	public void newGame(String p1, String p2, int stonesInEachPit) {
-		int originalCount = stonesInEachPit;
+		originalCount = stonesInEachPit;
 		for (int i = 0; i < board.length; i++) {
 			if (i == 6 || i == 13) {
-				continue;
+				board[i] = 0; 
 			} else {
 				board[i] = originalCount;
 			}
@@ -80,7 +81,6 @@ public class MancalaGame implements Serializable {
 		player1 = new Player(p1,1);
 		player2 = new Player(p2,2);
 		currentPlayer = player1;
-		cloneForRestart = board.clone(); // save board layout for restart button
 		//printBoard();
 		System.out.println("It is now " + currentPlayer.getName() + "'s turn");
 	}
@@ -115,6 +115,7 @@ public class MancalaGame implements Serializable {
 				stonesInHand = board[currentPit];
 				resetPit();
 				moveTo(stonesInHand, ++currentPit);
+				printBoard();
 				checkEndGame();
 				if (gameOver) {
 					determineWinner();
@@ -132,28 +133,24 @@ public class MancalaGame implements Serializable {
 	 * @param pit number of pit
 	 */
 	public void moveTo(int stonesInHand, int pit) {
-		//printBoard();
-		currentPit = pit;
-		if (currentPit == 14)
-			currentPit = 0; // loops pitNum to stay between 0 and 13
-		// complete player's turn
-		if (isPlayer1() && currentPit == 13 || !isPlayer1() && currentPit == 6) { // player
-			// will
-			// skip
-			// other
-			// player's
-			// scoring
-			// pit
-			moveTo(stonesInHand, ++currentPit);
-			// return;
+		/*System.out.println(madeMove);
+		printBoard();
+		System.out.println(currentPit);*/
+		
+		currentPit = pit; 
+		while(stonesInHand>1){ 
+			if (currentPit == 14)
+				currentPit = 0;
+		if (isPlayer1() && currentPit == 13 || !isPlayer1() && currentPit == 6) {
+				currentPit++; 
 		}
-		while (stonesInHand > 1) {
 			board[currentPit]++;
 			stonesInHand--;
-			moveTo(stonesInHand, ++currentPit);
-			return;
+			currentPit++; 
+			printBoard();
+			
 		}
-
+		
 		// dropping last stone, so check if landing in own scoring pit or
 		// side for bonus turn or stones
 		if (isValid() && board[currentPit] == 0) {              				// landed on empty of
@@ -168,6 +165,7 @@ public class MancalaGame implements Serializable {
 			}
 			else 
 				board[13]++;
+			madeMove = true;
 			stonesInHand = 0;
 			System.out.println("Extra turn!");
 		}
@@ -293,9 +291,9 @@ public class MancalaGame implements Serializable {
 	 * Begin current game from start state, with same settings and players
 	 */
 	public void restart() {
-		board = cloneForRestart;
-		currentPlayer = player1; 
-		this.gameOver = false; 
+		madeMove = false;
+		currentPit = -1;
+		newGame(player1.getName(), player2.getName(), originalCount); 
 	}
 
 	/**

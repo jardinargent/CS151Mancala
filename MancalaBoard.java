@@ -37,6 +37,8 @@ public class MancalaBoard implements ChangeListener {
 	private JPanel mainPanel;
 	private JPanel contentPanel;
 	private JPanel labelPanel;
+	private JPanel controlPanel; 
+	private JPanel functionPanel; 
 	private JLabel[] labelArray;
 	private ScorePanel player1;
 	private ScorePanel player2;
@@ -64,7 +66,7 @@ public class MancalaBoard implements ChangeListener {
          }*/
 		 
 		mainPanel = new JPanel(new BorderLayout());
-		mainPanel.setSize(1000, 300);
+		mainPanel.setSize(1000, 420);
 		mainPanel.add(new TitlePanel(), BorderLayout.NORTH);
 
 		player1 = new ScorePanel(game.getPlayer1());
@@ -79,24 +81,40 @@ public class MancalaBoard implements ChangeListener {
 
 	private void createBoard() {
 		mainFrame = new JFrame();
-		mainFrame.setSize(1000, 350);
+		mainFrame.setSize(1000, 420);
 		mainFrame.setTitle("Mancala- From, Team we.excelAt(ood)");
 
 		mainPanel.setBackground(Color.WHITE);
 		mainPanel.add(createContent());
-
-		mainPanel.add(createButtonPanel(), BorderLayout.SOUTH);
+		
+		mainPanel.add(createButtonPanel(),BorderLayout.SOUTH);
+		
 		mainFrame.add(mainPanel);
 		mainFrame.setResizable(false);
 		mainFrame.setVisible(true);
 		mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	}
 	private Component createButtonPanel() {
-
+		Dimension d = new Dimension(1000,100); 
 		JPanel buttonPanel = new JPanel();
-		buttonPanel.setSize(new Dimension(1000, 100));
-		buttonPanel.setLayout(new FlowLayout());
-
+		buttonPanel.setLayout(new GridLayout(3,1));
+		
+		controlPanel = new JPanel();
+		controlPanel.setSize(d);
+		controlPanel.setLayout(new FlowLayout());
+		
+		controlPanel = new JPanel();
+		controlPanel.setSize(d);
+		controlPanel.setLayout(new FlowLayout());
+		
+		labelPanel = new JPanel(); 
+		labelPanel.setSize(d);
+		labelPanel.setLayout(new FlowLayout());
+		
+		functionPanel = new JPanel(); 
+		functionPanel.setSize(d);
+		functionPanel.setLayout(new FlowLayout()); 
+		
 		messageLabel = new JLabel("   Player 1's Turn");
 		messageLabel.setFont(new Font("Calibri", Font.BOLD, 14));
 
@@ -152,8 +170,13 @@ public class MancalaBoard implements ChangeListener {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				game.restart();
+				System.out.println("Restarting game!");
 				for(int i = 0; i<14; i++){ 
 					pitArray[i].updateStoneCount(game.getPit(i, false));
+					if(i<=6)
+						pitArray[i].isPlaying(true);
+					else 
+						pitArray[i].isPlaying(false);
 				}
 				game.alert();
 			}			
@@ -188,13 +211,17 @@ public class MancalaBoard implements ChangeListener {
 			}
 
 		});
-		buttonPanel.add(messageLabel);
-		buttonPanel.add(undo);
-		buttonPanel.add(endTurn);
-		buttonPanel.add(restart);
-		buttonPanel.add(changeBoard); 
-		buttonPanel.add(quit);
-
+		labelPanel.add(messageLabel);
+		controlPanel.add(undo);
+		controlPanel.add(endTurn);
+		functionPanel.add(restart);
+		functionPanel.add(changeBoard); 
+		functionPanel.add(quit);
+		
+		buttonPanel.add(labelPanel);
+		buttonPanel.add(controlPanel);
+		buttonPanel.add(functionPanel); 
+		
 		return buttonPanel;
 
 	}
@@ -233,7 +260,7 @@ public class MancalaBoard implements ChangeListener {
 			JPanel pan = (JPanel) p[i];
 			pan.addMouseListener(new MouseAdapter() {
 				public void mousePressed(MouseEvent e) {
-					//System.out.println("Its coming here!!");
+					System.out.println("Pit MousePressed!!");
 					int pit = ((Pit) pan).getPitNum();
 					game.update(pit);
 					for (int i = 0; i < 14; i++) {
@@ -257,13 +284,14 @@ public class MancalaBoard implements ChangeListener {
 	 */
 	@Override
 	public void stateChanged(ChangeEvent e) {
+		System.out.println("Repainting!");
 		contentPanel.repaint();
 		if (game.getCurrentPlayer().getUndos() == 0 || game.noUndoBoard()) {
 			//System.out.println(game.getCurrentPlayer().getName());
 			undo.setEnabled(false);
 		} else
 			undo.setEnabled(true);
-
+		
 		messageLabel.setForeground(Color.BLACK);
 
 		if (game.extraTurn()) {
@@ -275,7 +303,9 @@ public class MancalaBoard implements ChangeListener {
 			game.invalidPrompted = false;
 		} else if (game.getEndTurn()) {
 			messageLabel.setText("   " + game.getCurrentPlayer().getName() + "'s Turn (END TURN)");
+			restart.setEnabled(false);
 		} else {
+			restart.setEnabled(true);
 			messageLabel.setText("   " + game.getCurrentPlayer().getName() + "'s Turn");
 		}
 		/*         MessageLabel  End     */
