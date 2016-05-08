@@ -42,6 +42,8 @@ public class MancalaBoard implements ChangeListener {
 	private ScorePanel player2;
 	private JButton undo;
 	private JButton endTurn;
+	private JButton restart; 
+	private JButton changeBoard; 
 	private JButton quit;
 	private JLabel messageLabel;
 	private Pit[] pitArray;
@@ -139,9 +141,40 @@ public class MancalaBoard implements ChangeListener {
 				stateChanged(new ChangeEvent(this));
 			}
 		});
+		restart = new JButton("RESTART"); 
+		restart.setFont(new Font("Calibri",Font.BOLD,15));
+		restart.setFocusable(false);
+		restart.setBackground(new Color(51, 153, 102));
+		restart.setForeground(Color.WHITE);
+		restart.addActionListener(new ActionListener(){
 
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				game.restart();
+				for(int i = 0; i<14; i++){ 
+					pitArray[i].updateStoneCount(game.getPit(i, false));
+				}
+				game.alert();
+			}			
+		});
+		
+		changeBoard =  new JButton("CHANGE BOARD"); 
+		changeBoard.setFont(new Font("Calibri",Font.BOLD,15));
+		changeBoard.setBackground(new Color(128, 128, 128));
+		changeBoard.setForeground(Color.WHITE);
+		changeBoard.setFocusable(false);		
+		changeBoard.addActionListener(new ActionListener(){
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				new Menu(game);
+				mainFrame.dispose();
+			}
+			
+		});
+		
 		quit = new JButton("QUIT");
-		quit.setFont(new Font("Calibri", Font.PLAIN, 15));
+		quit.setFont(new Font("Calibri", Font.BOLD, 15));
 		quit.setFocusable(false);
 		quit.setForeground(Color.WHITE);
 		quit.setBackground(new Color(255, 77, 77));
@@ -157,6 +190,8 @@ public class MancalaBoard implements ChangeListener {
 		buttonPanel.add(messageLabel);
 		buttonPanel.add(undo);
 		buttonPanel.add(endTurn);
+		buttonPanel.add(restart);
+		buttonPanel.add(changeBoard); 
 		buttonPanel.add(quit);
 
 		return buttonPanel;

@@ -94,7 +94,7 @@ class CirclePit extends JPanel implements Pit {
 	/**
 	 * Update number of stones in pit
 	 * 
-	 * @param stone
+	 * @param stone the number of stones in pit
 	 */
 	public void updateStoneCount(int stone) {
 		stoneNum = stone;

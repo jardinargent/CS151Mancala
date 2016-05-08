@@ -93,7 +93,7 @@ public class RectanglePit extends JPanel implements Pit {
 	/**
 	 * Update number of stones in pit
 	 * 
-	 * @param stone
+	 * @param stone number of stones in pit
 	 */
 	public void updateStoneCount(int stone) {
 		stoneNum = stone;

@@ -20,7 +20,7 @@ public class ScorePanel extends JPanel {
 
 	/**
 	 * Constructor initializes score panel for given player 
-	 * @param p
+	 * @param p score panel for player p
 	 */
 	public ScorePanel (Player p) {
 		String playerName = p.getName();

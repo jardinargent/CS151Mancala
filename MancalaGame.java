@@ -87,6 +87,7 @@ public class MancalaGame implements Serializable {
 	/**
 	 * Checks if current player is player1 return true if player1, false
 	 * otherwise
+	 * @return if player is player 1
 	 */
 	public boolean isPlayer1() {
 		return currentPlayer.equals(player1);
@@ -290,6 +291,8 @@ public class MancalaGame implements Serializable {
 	 */
 	public void restart() {
 		board = cloneForRestart;
+		currentPlayer = player1; 
+		this.gameOver = false; 
 	}
 
 	/**
@@ -327,9 +330,18 @@ public class MancalaGame implements Serializable {
 	/**
 	 * Choose pit for move param pit pit number that was chosen for move
 	 * Notifies the attached views of change 
+	 * 
+	 * @param pit pit num
 	 */
 	public void update(int pit) {
 		move(pit);
+		alert();
+	}
+	
+	/**
+	 * Calls View and has it repaint
+	 */
+	public void alert(){
 		for (ChangeListener l : listeners) {
 			l.stateChanged(new ChangeEvent(this));
 		}
@@ -361,6 +373,8 @@ public class MancalaGame implements Serializable {
 
 	/**
 	 * Load games on file
+	 * @throws IOException 
+	 * @throws ClassNotFoundException
 	 */
 	public void load() throws IOException, ClassNotFoundException {
 		try {
