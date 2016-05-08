@@ -160,7 +160,11 @@ public class MancalaGame implements Serializable {
 		}
 		//check if extra turn is earned
 		if (extraTurn()) {
-			board[6]++;
+			if(currentPlayer.getPlayNum() == 1){
+					board[6]++;
+			}
+			else 
+				board[13]++;
 			stonesInHand = 0;
 			System.out.println("Extra turn!");
 		}
