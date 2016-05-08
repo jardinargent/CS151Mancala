@@ -6,7 +6,7 @@
 *  @author  Team we.excelAt(ood)
 *  @version	1
 *~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
-public class TesterClass {
+public class MancalaTest {
 	public static void main(String[]args) {
 		MancalaGame board = new MancalaGame();
 		Menu m = new Menu(board);
